@@ -9,8 +9,7 @@ from multiprocessing import Pool
 def reacting_polymer(poly):
     n = 0
     while n < len(poly) - 2:
-        if ((0x41 <= poly[n] <= 0x5A and poly[n] == poly[n+1] - 0x20)
-                or (0x61 <= poly[n] <= 0x7A and poly[n] == poly[n+1] + 0x20)):
+        if (poly[n] == poly[n+1] - 0x20 or poly[n] == poly[n+1] + 0x20):
             poly = poly[:n]+poly[n+2:]
             n = max(n-1, 0)
         else:
@@ -39,7 +38,6 @@ if __name__ == '__main__':
     ascii_uppercase = b'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     args_for_child_procs = ((c, formula) for c in ascii_uppercase for formula in (polymer,))
 
-    min_length = len(polymer)
     with Pool(len(os.sched_getaffinity(0))) as p:
         result = p.map_async(improving_polymer, args_for_child_procs)
         res_value = result.get()

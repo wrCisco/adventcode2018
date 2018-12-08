@@ -8,8 +8,7 @@ import os
 def reacting_polymer(poly):
     n = 0
     while n < len(poly) - 2:
-        if ((0x41 <= poly[n] <= 0x5A and poly[n] == poly[n+1] - 0x20)
-                or (0x61 <= poly[n] <= 0x7A and poly[n] == poly[n+1] + 0x20)):
+        if (poly[n] == poly[n+1] - 0x20 or poly[n] == poly[n+1] + 0x20):
             poly = poly[:n]+poly[n+2:]
             n = max(n-1, 0)
         else:

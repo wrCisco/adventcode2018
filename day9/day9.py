@@ -11,12 +11,12 @@ class Player:
 
 class Marble:
 
-    def __init__(self, value: int, next_: 'Marble' = None, prev: 'Marble' = None):
+    def __init__(self, value: int) -> None:
         self.value = value
-        self.next_marble = next_ if next_ else self
-        self.prev_marble = prev if prev else self
+        self.next_marble = self
+        self.prev_marble = self
 
-    def insert(self, marble: 'Marble', offset: int = 0):
+    def insert(self, marble: 'Marble', offset: int = 0) -> None:
         m = self
         if offset >= 0:
             for n in range(offset):
@@ -29,7 +29,7 @@ class Marble:
         m.next_marble.prev_marble = marble
         m.next_marble = marble
     
-    def remove(self, offset: int = 0):
+    def remove(self, offset: int = 0) -> 'Marble':
         m = self
         if offset >= 0:
             for n in range(offset):
@@ -56,7 +56,7 @@ class Game:
             self.round(marble)
         return max(self.players, key=lambda p: p.score)
 
-    def round(self, marble_value):
+    def round(self, marble_value: int) -> None:
         if marble_value % 23:
             new_marble = Marble(marble_value)
             self.current_marble.insert(new_marble, 1)

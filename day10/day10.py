@@ -53,22 +53,22 @@ if __name__ == '__main__':
         ) as fh:
         lines = [line for line in fh.read().split('\n') if line]
 
-points = []
-for line in lines:
-    match = re.search(r'<([ -]\d+), ([ -]\d+)> velocity=<([ -]\d+), ([ -]\d+)>', line)
-    position = (int(match.group(1)), int(match.group(2)))
-    velocity = (int(match.group(3)), int(match.group(4)))
-    points.append(Point(position, velocity))
+    points = []
+    for line in lines:
+        match = re.search(r'<([ -]\d+), ([ -]\d+)> velocity=<([ -]\d+), ([ -]\d+)>', line)
+        position = (int(match.group(1)), int(match.group(2)))
+        velocity = (int(match.group(3)), int(match.group(4)))
+        points.append(Point(position, velocity))
 
-counter = 0
-while True:
-    counter += 1
-    for point in points:
-        point.move()
-    if counter > 10000:
-        if allnear(points):
-            print("Seconds:", counter)
-            printpoints(points)
-            out = input("Do you want to exit now? (y/n) ")
-            if out == 'y':
-                break
+    counter = 0
+    while True:
+        counter += 1
+        for point in points:
+            point.move()
+        if counter > 10000:
+            if allnear(points):
+                print("Seconds:", counter)
+                printpoints(points)
+                out = input("Do you want to exit now? (y/n) ")
+                if out == 'y':
+                    break

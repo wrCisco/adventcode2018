@@ -6,21 +6,13 @@ import os
 from itertools import dropwhile
 
 
-def check_change_state(states, pots, index, extremes, previous_global_state):
-    actual_state = "".join(previous_global_state.get(index+offset, '.') for offset in range(-2, 3))
-    for state, next_state in states:
-        if actual_state == state:
-            pots[index] = next_state
-            if index < extremes[0]:
-                extremes[0] = index
-            elif index > extremes[1]:
-                extremes[1] = index
-            break
-
 def next_generation(states, pots, extremes):
     global_state = pots.copy()
-    for i in range(extremes[0]-2, extremes[1]+3):
-        check_change_state(states, pots, i, extremes, global_state)
+    extremes[0] -= 2
+    extremes[1] += 2
+    for i in range(extremes[0], extremes[1]+1):
+        state = "".join(global_state.get(i+offset, '.') for offset in range(-2, 3))
+        pots[i] = states[state]
     for i in range(extremes[0], extremes[0]+len(pots)):
         if pots[i] == '.':
             del pots[i]
@@ -50,7 +42,10 @@ if __name__ == '__main__':
         ) as fh:
         lines = [line for line in fh.read().split('\n') if line]
     initial_state = lines[0][lines[0].index('#'):]
-    states = [line.split(' => ') for line in lines[1:]]
+    states = {}
+    for line in lines[1:]:
+        rule = line.split(' => ')
+        states[rule[0]] = rule[1]
 
     pots = {}
     for i, c in enumerate(initial_state):
@@ -58,12 +53,13 @@ if __name__ == '__main__':
 
     extremes = [0, i]
 
-    for generation in range(50000000000):
+    for generation in range(1, 50000000000):
         stable = next_generation(states, pots, extremes)
-        if generation == 19:
+        #print(f"{generation}: ", "." * abs(extremes[0]), "".join(pots[i] for i in range(extremes[0], extremes[1]+1)), sep="")
+        if generation == 20:
             total_sum_20th = sum(i for i, plant in pots.items() if plant == '#')
         if stable:
-            total_sum = sum(i + 50000000000 - (generation+1) for i, plant in pots.items() if plant == '#')
+            total_sum = sum(i + 50000000000 - generation for i, plant in pots.items() if plant == '#')
             break
     print("Sum of numbers of pots containing plants after 20 generations:", total_sum_20th)
     print("Sum of numbers of pots containing plants after 50000000000 generations:", total_sum)

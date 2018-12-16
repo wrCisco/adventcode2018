@@ -120,6 +120,10 @@ class Device:
     def eqrr(self, A: int, B: int, C: int) -> None:
         self.put_register(C, 1 if self.register(A) == self.register(B) else 0)
 
+    def execute(self, program: 'Program') -> None:
+        for instr in program.instructions:
+            self.converter[instr.opcode](*instr.valuesIO)
+
 
 class Sample:
 
@@ -148,10 +152,6 @@ class Program:
 
     def __init__(self, instructions: Sequence[Sequence[int]]) -> None:
         self.instructions = [ProgramInstruction(instr) for instr in instructions]
-
-    def execute(self, device: Device) -> None:
-        for instr in self.instructions:
-            device.converter[instr.opcode](*instr.valuesIO)
 
 
 if __name__ == '__main__':
@@ -222,6 +222,6 @@ if __name__ == '__main__':
     rows = test_program_raw.splitlines()
     test_program = Program([[int(val) for val in re.findall(r'\d+', row)] for row in rows])
     device.zero_registers()
-    test_program.execute(device)
+    device.execute(test_program)
 
     print(f"Value of register 0 after test program execution is:", device.register(0))

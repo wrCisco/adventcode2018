@@ -18,9 +18,7 @@ class Point:
         self.y += self.velocity[1]
 
     def isnear(self, other: 'Point') -> bool:
-        if abs(self.x - other.x) <= 1 and abs(self.y - other.y) <= 1:
-            return True
-        return False
+        return abs(self.x - other.x) <= 1 and abs(self.y - other.y) <= 1
 
 
 def allnear(points: list) -> bool:

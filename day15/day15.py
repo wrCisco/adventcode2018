@@ -22,7 +22,6 @@ class Game:
         with open(input_, encoding='utf-8') as fh:
             return [list(line) for line in fh.read().split('\n') if line]
 
-
     def _units_from_cave(self, elves_attack_power: int) -> List['Unit']:
         units = []
         for y, line in enumerate(self.cave):
@@ -47,7 +46,6 @@ class Game:
 
     def round(self) -> bool:
         self.units.sort(key=lambda u: (u.y, u.x))
-        offset = 0
         remaining_units = self.units.copy()
         for unit in self.units:
             if unit.hit_points <= 0:
@@ -111,7 +109,7 @@ class Unit:
             self,
             race: str,
             coords: Tuple[int, int],
-            cave: Sequence[Sequence],
+            cave: Sequence[Sequence[str]],
             attack_power: int = 3
     ) -> None:
         self.cave = cave
@@ -168,7 +166,7 @@ class Unit:
     ) -> List[Tuple]:
         return [sq for sq in self.squares_in_range(center) if self.cave[sq[1]][sq[0]] == '.']
 
-    def attack(self, targets: 'Unit') -> Optional['Unit']:
+    def attack(self, targets: sequence['Unit']) -> Optional['Unit']:
         candidates = []
         for target in targets:
             if target.coords in self.squares_in_range():
@@ -179,7 +177,7 @@ class Unit:
             return candidates[0]
         return
 
-    def move(self, targets: 'Unit') -> None:
+    def move(self, targets: Sequence['Unit']) -> None:
         targets_squares_in_range = []
         for target in targets:
             targets_squares_in_range.extend(target.open_squares_in_range())

@@ -7,7 +7,7 @@ cur_index1 = 0
 cur_index2 = 1
 
 obj = [7, 9, 3, 0, 6, 1]
-while recipes[-6:] != obj and recipes[-7:-1] != obj:
+while obj not in (recipes[-6:], recipes[-7:-1]):
     recipes.extend(int(x) for x in str(sum((recipes[cur_index1], recipes[cur_index2]))))
     cur_index1 = (cur_index1 + 1 + recipes[cur_index1]) % len(recipes)
     cur_index2 = (cur_index2 + 1 + recipes[cur_index2]) % len(recipes)

@@ -172,6 +172,10 @@ class Water:
             new_flows.append(self.current)
         elif can_flow_down == 'no':
             basin.append(self.current)
+        # if flow is blocked both right and left, stabilize water in the basin
+        # and start a new spread one line upper, else follow the flow
+        # at the new coordinates found (new_flows[0]) and optionally append
+        # the coordinates of the second new flow to self.forks
         if len(basin) == 2:
             for x in range(basin[0][0], basin[1][0]+1):
                 self.ground[self.y][x] = '~'

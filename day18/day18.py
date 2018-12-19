@@ -42,7 +42,9 @@ class Ground:
             snapshot: Optional[List[List[str]]] = None
     ) -> Mapping[str, int]:
         area = self.last_snapshot if not snapshot else snapshot
-        adjacents = set(((-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)))
+        adjacents = set(((-1, -1), (0, -1), (1, -1),
+                         (-1,  0),          (1,  0),
+                         (-1,  1), (0,  1), (1,  1)))
         if center[0] == 0:
             adjacents -= set(((-1, -1), (-1, 0), (-1, 1)))
         if center[1] == 0:
@@ -82,7 +84,9 @@ def find_period(ground: Ground) -> Optional[int]:
 
 
 if __name__ == '__main__':
-    ground = Ground(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_day18.txt'))
+    ground = Ground(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_day18.txt')
+    )
     for m in range(1, 1000000001):
         ground.next_minute()
         if m == 10:

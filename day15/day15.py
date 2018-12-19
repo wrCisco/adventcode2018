@@ -148,7 +148,7 @@ class Unit:
     def squares_in_range(
             self,
             center: Optional[Tuple[int, int]] = None
-    ) -> List[Tuple]:
+    ) -> List[Tuple[int, int]]:
         if center:
             x, y = center
         else:
@@ -163,10 +163,10 @@ class Unit:
     def open_squares_in_range(
             self,
             center: Optional[Tuple[int, int]] = None
-    ) -> List[Tuple]:
+    ) -> List[Tuple[int, int]]:
         return [sq for sq in self.squares_in_range(center) if self.cave[sq[1]][sq[0]] == '.']
 
-    def attack(self, targets: sequence['Unit']) -> Optional['Unit']:
+    def attack(self, targets: Sequence['Unit']) -> Optional['Unit']:
         candidates = []
         for target in targets:
             if target.coords in self.squares_in_range():

@@ -74,13 +74,13 @@ class Ground:
         return trees * lumberyards
 
 
-def find_period(ground: Ground, index: int) -> Optional[int]:
+def find_period(ground: Ground) -> Optional[int]:
     for old_snapshot in ground.snapshots:
         if ground.last_snapshot == old_snapshot and ground.last_snapshot is not old_snapshot:
             # print(f"Found period. First snapshot: {ground.snapshots.index(old_snapshot)} - Last snapshot: {m}")
             # ground.print_area(old_snapshot)
             # ground.print_area(ground.last_snapshot)
-            return index - (ground.snapshots.index(old_snapshot) + 1)
+            return len(ground.snapshots) - ground.snapshots.index(old_snapshot) - 1
 
 
 if __name__ == '__main__':
@@ -91,7 +91,7 @@ if __name__ == '__main__':
         ground.next_minute()
         if m == 10:
             print(f"Value after ten minutes: {ground.compute_value()}")
-        period = find_period(ground, m)
+        period = find_period(ground)
         if period:
             index = 1000000000 % period
             my_area = ground.snapshots[m - period + index]

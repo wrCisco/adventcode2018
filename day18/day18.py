@@ -82,7 +82,6 @@ def find_period(ground: Ground) -> Optional[int]:
             # ground.print_area(ground.last_snapshot)
             return len(ground.snapshots) - ground.snapshots.index(old_snapshot) - 1
 
-
 if __name__ == '__main__':
     ground = Ground(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input_day18.txt')
@@ -93,7 +92,7 @@ if __name__ == '__main__':
             print(f"Value after ten minutes: {ground.compute_value()}")
         period = find_period(ground)
         if period:
-            index = 1000000000 % period
+            index = (1000000000 - (m - period)) % period
             my_area = ground.snapshots[m - period + index]
             print(f"Value after one billion minutes: {ground.compute_value(my_area)}")
             break

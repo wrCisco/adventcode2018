@@ -127,22 +127,22 @@ class Device:
         self.put_register(C, 1 if self.register(A) == self.register(B) else 0)
 
     def execute(self, program: 'Program', instruction_pointer: int = 0) -> None:
-        print("Nr of instructions:", len(program.instructions))
+        # print("Nr of instructions:", len(program.instructions))
         while instruction_pointer in range(len(program.instructions)):
             self.put_register(program.register_ip, instruction_pointer)
             exec_instr = program.instructions[instruction_pointer]
-            print("Executing instruction nr. ", instruction_pointer, " (", self.opcode2instr[exec_instr.instruction[0]].name, " ",
-                " ".join(str(i) for i in exec_instr.instruction[1:]), ")", sep="")
-            print("Before:", end=" ")
-            self.dump_registers()
+            # print("Executing instruction nr. ", instruction_pointer, " (", self.opcode2instr[exec_instr.instruction[0]].name, " ",
+            #     " ".join(str(i) for i in exec_instr.instruction[1:]), ")", sep="")
+            # print("Before:", end=" ")
+            # self.dump_registers()
             self.opcode2instr[exec_instr.opcode](*exec_instr.valuesIO)
-            print("After: ", end=" ")
-            self.dump_registers()
+            # print("After: ", end=" ")
+            # self.dump_registers()
             instruction_pointer = self.register(program.register_ip)
             instruction_pointer += 1
-            input()
+            # input()
 
-    def execute_hack(self):
+    def execute_hack(self) -> None:
         self.put_register(0, 0)
         self.put_register(1, 3)
         self.put_register(2, 1)#10551296)
@@ -176,7 +176,11 @@ class ProgramInstruction:
 
 class Program:
 
-    def __init__(self, instructions: Sequence[Sequence[int]], instr_pointer_register) -> None:
+    def __init__(
+            self,
+            instructions: Sequence[Sequence[int]],
+            instr_pointer_register: int
+    ) -> None:
         self.instructions = [ProgramInstruction(instr) for instr in instructions]
         self.register_ip = instr_pointer_register
 
@@ -196,7 +200,7 @@ if __name__ == '__main__':
     bound_register = int(re.findall(r'\d', instructions[0])[0])
     instructions.pop(0)
     for i, instr in enumerate(instructions):
-        print(instr)
+        # print(instr)
         opcode_instr = re.sub(r'(\w{4})', lambda match: str(device.name2instr[match.group(1)].opcode), instr)
         instructions[i] = [int(val) for val in re.findall(r'\d+', opcode_instr)]
     daemon = Program(instructions, bound_register)

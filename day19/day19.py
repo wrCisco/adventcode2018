@@ -131,8 +131,9 @@ class Device:
         while instruction_pointer in range(len(program.instructions)):
             self.put_register(program.register_ip, instruction_pointer)
             exec_instr = program.instructions[instruction_pointer]
-            # print("Executing instruction nr. ", instruction_pointer, " (", self.opcode2instr[exec_instr.instruction[0]].name, " ",
-            #     " ".join(str(i) for i in exec_instr.instruction[1:]), ")", sep="")
+            # print("Executing instruction nr. ", instruction_pointer, 
+            #       " (", self.opcode2instr[exec_instr.instruction[0]].name, " ",
+            #       " ".join(str(i) for i in exec_instr.instruction[1:]), ")", sep="")
             # print("Before:", end=" ")
             # self.dump_registers()
             self.opcode2instr[exec_instr.opcode](*exec_instr.valuesIO)
@@ -201,7 +202,7 @@ if __name__ == '__main__':
     instructions.pop(0)
     for i, instr in enumerate(instructions):
         # print(instr)
-        opcode_instr = re.sub(r'(\w{4})', lambda match: str(device.name2instr[match.group(1)].opcode), instr)
+        opcode_instr = re.sub(r'(^\w{4})', lambda match: str(device.name2instr[match.group(1)].opcode), instr)
         instructions[i] = [int(val) for val in re.findall(r'\d+', opcode_instr)]
     daemon = Program(instructions, bound_register)
     device.zero_registers()

@@ -11,7 +11,7 @@ from nanobot import Nanobot
 def to_origin(point, nanobots):
     max_in_range = len(nanobots)
     in_range = len(nanobots)
-    pos = point
+    pos = list(point)
     diffs = (
         (-1, -1, -1),
         (-1,  0,  0),
@@ -27,8 +27,9 @@ def to_origin(point, nanobots):
     for diff in diffs:
         while in_range >= max_in_range:
             prev_range = in_range
-            prev_pos = pos
-            pos = (pos[0] + diff[0], pos[1] + diff[1], pos[2] + diff[2])
+            prev_pos = pos.copy()
+            for i in range(len(pos)):
+               pos[i] = pos[i] + diff[i] if pos[i] > 0 else pos[i] - diff[i]
             in_range = 0
             for bot in nanobots:
                 if bot.inrange(*pos):
@@ -76,7 +77,7 @@ if __name__ == '__main__':
                 intersecting.remove(bot)
             except KeyError:
                 pass
-    print(f"{len(intersections)} remaining")
+    print(f"{len(intersections)} intersecting nanobots remaining")
 
     # for nanobot, intersecting in intersections.items():
     #     print(f"Nanobot {nanobot} intersects {len(intersecting)} other nanobots")
